@@ -37,3 +37,8 @@ button{
     font-size: 20px;
     margin-top: 25px;
 }
+
+.error-text{
+    font-size: 15px;
+    color: rgb(184, 38, 38);
+}
