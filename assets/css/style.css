@@ -15,7 +15,7 @@ section{
     max-width: 640px;
     min-width: 300px;
     margin: 20px auto; 
-    background-color: thistle;
+    background-color: rgb(56, 207, 119);
     padding: 20px;
     border-radius: 10px;
 }
@@ -30,4 +30,10 @@ input{
     padding: 15px;
     border-radius: 5px;
     font-size: 20px;
+}
+
+button{
+    padding: 20px;
+    font-size: 20px;
+    margin-top: 25px;
 }
