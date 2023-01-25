@@ -6,12 +6,12 @@ class ValidaFormulario{
 
     eventos(){
         this.formulario.addEventListener('submit', e =>{
-            this.handleSubmit(e);
+            this.handleSubmit(e); //A função será realizada quando o formulário for enviado (quando o botão enviar for clicado);
         })
     }
 
     handleSubmit(e){
-        e.preventDefault();
+        e.preventDefault(); // Evitando o formulário ser enviado
         const camposValidos = this.camposSaoValidos();
         const senhasValidas = this.senhasSaoValidas();
 
@@ -89,7 +89,7 @@ class ValidaFormulario{
     validaCPF(campo){
         const cpf = new ValidaCPF(campo.value);
 
-        if(!cpf.valida()) {
+        if(!cpf.valida()) { // este método valida() vem de dentro do class validaCPF. Esse método retorna true para cpf validos e false para cpf não validos
             this.criaErro(campo, 'CPF inválido');
             return false
         }
