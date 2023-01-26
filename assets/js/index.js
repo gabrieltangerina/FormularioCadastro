@@ -12,33 +12,8 @@ class ValidaFormulario{
 
     handleSubmit(e){
         e.preventDefault();
+
         const camposValidos = this.camposSaoValidos();
-        const senhasValidas = this.senhasSaoValidas();
-
-        if(camposValidos && senhasValidas){
-            alert('Formulário enviado');
-            this.formulario.submit();
-        }
-    }
-
-    senhasSaoValidas(){
-        let valid = true;
-
-        const senha = this.formulario.querySelector('.senha');
-        const repetirSenha = this.formulario.querySelector('.repetir-senha');
-
-        if(senha.value !== repetirSenha.value){
-            this.criaErro(senha, 'Campos senha e repetir senha precisam ser iguais');
-            this.criaErro(repetirSenha, 'Campos senha e repetir senha precisam ser iguais');
-            valid = false;
-        }
-
-        if(senha.value.length < 6 || senha.value.length > 12){
-            this.criaErro(senha, 'Precisa ter entre 6 e 12 caracteres');
-            valid = false;
-        }        
-
-        return valid
     }
 
     camposSaoValidos(){
@@ -51,57 +26,34 @@ class ValidaFormulario{
         for(let campo of this.formulario.querySelectorAll('.validar')){
             const p = campo.previousElementSibling.innerText;
 
-            if(!campo.value) {
-                this.criaErro(campo, `O campo "${p}" não pode estar vazio`);
+            if(!campo.value){
+                this.criaErro(campo, `O campo "${p}" precisa estar preenchido`);
                 valid = false;
             }
 
             if(campo.classList.contains('cpf')){
                 if(!this.validaCPF(campo)) valid = false;
             }
-
-            if(campo.classList.contains('usuario')){
-                if(!this.validaUsuario(campo)) valid = false
-            }
-
-
-        }
-
-        return valid;
-    }
-
-    validaUsuario(campo){
-        const usuario = campo.value;
-        let valid = true;
-
-        if(usuario.length < 3 || usuario.length > 12){
-            this.criaErro(campo, 'O número de caracteres deve estar entre 3 e 12');
-            valid = false;
-        }
-
-        if(!usuario.match(/^[a-zA-Z0-9]+$/g)){
-            this.criaErro(campo, 'O usuário deverá conter apenas letras ou números');
-            valid = false;
         }
 
         return valid;
     }
 
     validaCPF(campo){
-        const cpf = new ValidaCPF(campo.value);
+        const cpf = ValidaCPF(campo.value);
 
         if(!cpf.valida()){
-            this.criaErro(campo, 'CPF inválido')
-            return false
+            this.criaErro(campo, 'CPF inválido');
+            return false;
         }
 
-        return true
+        return true;
     }
 
     criaErro(campo, msg){
         const div = document.createElement('div');
         div.innerText = msg;
-        div.classList.add('error-text');
+        div.classList.add('error-text')
         campo.insertAdjacentElement('afterend', div);
     }
 }
