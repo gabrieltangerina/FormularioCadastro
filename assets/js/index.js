@@ -6,12 +6,12 @@ class ValidaFormulario{
 
     eventos(){
         this.formulario.addEventListener('submit', e =>{
-            this.handleSubmit(e); //A função será realizada quando o formulário for enviado (quando o botão enviar for clicado);
+            this.handleSubmit(e);
         })
     }
 
     handleSubmit(e){
-        e.preventDefault(); // Evitando o formulário ser enviado
+        e.preventDefault();
         const camposValidos = this.camposSaoValidos();
         const senhasValidas = this.senhasSaoValidas();
 
@@ -22,23 +22,23 @@ class ValidaFormulario{
     }
 
     senhasSaoValidas(){
-        let valid = true
+        let valid = true;
 
         const senha = this.formulario.querySelector('.senha');
         const repetirSenha = this.formulario.querySelector('.repetir-senha');
 
         if(senha.value !== repetirSenha.value){
-            valid = false;
             this.criaErro(senha, 'Campos senha e repetir senha precisam ser iguais');
             this.criaErro(repetirSenha, 'Campos senha e repetir senha precisam ser iguais');
+            valid = false;
         }
 
         if(senha.value.length < 6 || senha.value.length > 12){
+            this.criaErro(senha, 'Precisa ter entre 6 e 12 caracteres');
             valid = false;
-            this.criaErro(senha, 'Senha precisa estar entre 6 e 12 caracteres');
-        }
+        }        
 
-        return valid;
+        return valid
     }
 
     camposSaoValidos(){
@@ -48,11 +48,11 @@ class ValidaFormulario{
             removerErros.remove();
         }
 
-        for(let campo of this.formulario.querySelectorAll('.validar')) {
+        for(let campo of this.formulario.querySelectorAll('.validar')){
             const p = campo.previousElementSibling.innerText;
-            
-            if(!campo.value){
-                this.criaErro(campo, `O campo "${p}" precisa estar preenchido` );
+
+            if(!campo.value) {
+                this.criaErro(campo, `O campo "${p}" não pode estar vazio`);
                 valid = false;
             }
 
@@ -61,8 +61,10 @@ class ValidaFormulario{
             }
 
             if(campo.classList.contains('usuario')){
-                if(!this.validaUsuario(campo)) valid = false;
+                if(!this.validaUsuario(campo)) valid = false
             }
+
+
         }
 
         return valid;
@@ -70,27 +72,26 @@ class ValidaFormulario{
 
     validaUsuario(campo){
         const usuario = campo.value;
-        let valid = true
+        let valid = true;
 
         if(usuario.length < 3 || usuario.length > 12){
-            this.criaErro(campo, 'Usuário precisa ter entre 3 e 12 caracteres');
+            this.criaErro(campo, 'O número de caracteres deve estar entre 3 e 12');
             valid = false;
         }
 
         if(!usuario.match(/^[a-zA-Z0-9]+$/g)){
-            this.criaErro(campo, 'Usuário precisa conter apenas letras e números')
+            this.criaErro(campo, 'O usuário deverá conter apenas letras ou números');
             valid = false;
         }
 
         return valid;
     }
 
-
     validaCPF(campo){
         const cpf = new ValidaCPF(campo.value);
 
-        if(!cpf.valida()) { // este método valida() vem de dentro do class validaCPF. Esse método retorna true para cpf validos e false para cpf não validos
-            this.criaErro(campo, 'CPF inválido');
+        if(!cpf.valida()){
+            this.criaErro(campo, 'CPF inválido')
             return false
         }
 
@@ -99,14 +100,10 @@ class ValidaFormulario{
 
     criaErro(campo, msg){
         const div = document.createElement('div');
-        div.innerText = msg
+        div.innerText = msg;
         div.classList.add('error-text');
         campo.insertAdjacentElement('afterend', div);
     }
 }
 
 const valida = new ValidaFormulario();
-
-// Campo -> é o input. 
-// p -> pega o irmão anterior do campo
-// Na linha 34, chama-se a função que retorna um resultado. Se o resultado for false, ou seja, o cpf seja inválido, com o operador de negação o if fica true e assim o que está dentro do if é feito.
